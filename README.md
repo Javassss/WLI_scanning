@@ -18,4 +18,4 @@ This package offers two ways of carrying out measurement and analysis of a speci
   
   C
   
-  There are two different Arduino codes: one used for oscillating the piezo actuator back and forth and one used for the measurement process that moves the piezo actuator from its max displacement towards its relaxation point.
+  There are two different Arduino codes: one used for oscillating the piezo actuator back and forth for fringe viewing purposes only and one used for the measurement process.
