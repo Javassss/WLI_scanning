@@ -342,4 +342,3 @@ plt.plot(x,incremental,'-o')
 
 
 
-
