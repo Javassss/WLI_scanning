@@ -1,0 +1,1 @@
+anaconda-project add-packages matplotlib=2.2.2 imageio=2.3.0 scikit-image=0.13.1 pyserial=3.4
