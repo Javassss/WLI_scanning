@@ -49,7 +49,7 @@ def calc_phase(image):
     # Find the coordinates of local maxima
     coeff_max = peak_local_max(f_abs, min_distance=3, threshold_rel=0.1, num_peaks=3)
     
-    # 1st maximum corresponds to the lowest dominant frquency of the image : 
+    # 1st maximum corresponds to the lowest dominant frequency of the image : 
     #                                                           coeff_max[1]
     # 2nd maximum corresponds to the fringe modulation frequency :
     #                                           coeff_max[0] or coeff_max[2]
@@ -338,6 +338,7 @@ plt.plot(x,incremental,'-o')
 #ax.plot(t,p1,'r',t,p2,'b');
 #ax2 = fig.add_subplot(212)
 #ax2.plot(t,p,'k');
+
 
 
 
