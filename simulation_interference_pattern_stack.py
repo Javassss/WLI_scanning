@@ -41,14 +41,16 @@ x_points = 101 # linspace points
 y_points = 101
 
 # sample parameters
-mu_s, sigma_s = 0.0, 2000.0 # um, um | gaussian parameters
+mu_s, sigma_s = 0.0, 500.0 # um, um | gaussian parameters
 
 # z-axis scaling factor
-scale_z = 10000.0 # nm
+scale_z = 1000.0 # nm
 #-----------------------------
 sample_name = 'gaussbell'
 # 2D gaussian bell
 sample = gaussian_2d(x_axis, y_axis, x_points, y_points, mu_s, sigma_s)
+#sample = np.ones([x_points, y_points])*8
+#sample[:,:x_points//2] = 4
 
 #-----------------------------
  
@@ -61,24 +63,25 @@ GENERATE IMAGE STACK OF INTERFERENCE PATTERNS WITH Z-AXIS SCANNING
 # I_tot = I_amb + gamma*cos(2*pi/lamda*OPD)
 # OPD = 2*elevation
 
-lamda = 55.0 # nm | wavelength or mean wavelength of illuminating source
+lamda = 500.0 # nm | wavelength or mean wavelength of illuminating source
 intensity_scale = 20000.0 # assuming 16-bit depth per pixel | max = 65535
-bckg_percent = 0.05
-sample_percent = 0.05
-ref_percent = 0.9
+bckg_percent = 0.0
+sample_percent = 0.5
+ref_percent = 0.5
 #------------------------------------------------------------------------------
 # Camera intensity variation across the field
 mu_field = 0.0
 sigma_field = min(np.amax(x_axis)-np.amin(x_axis), np.amax(y_axis)-np.amin(y_axis))
 
-field_intensity = gaussian_2d(x_axis, y_axis, x_points, y_points, mu_field, sigma_field)
+field_intensity = np.ones([x_points, y_points])
+#field_intensity = gaussian_2d(x_axis, y_axis, x_points, y_points, mu_field, sigma_field)
 #------------------------------------------------------------------------------
 # Axis and sigma of coherence function or gamma
 sigma_g = 5000.0 # nm
 scan_length = 500 # number of scans in z-axis
 
 #scan_range = [np.amin(sample), np.amax(sample)]
-scan_range = [0.0, 15000.0] # based on knowledge of the sample range of heights
+scan_range = [0, 12000.0] # based on knowledge of the sample range of heights
 # simulated reference arm movement reduces OPD with each step made
 # Linear movement of reference arm
 #scan_axis = np.linspace(scan_range[1],scan_range[0],scan_length)
@@ -148,8 +151,10 @@ for k in range(scan_length):
 #
 ##------------------------------------------------------------------------------
 ##%%
-## Display image sequence
-display_imageStack(I_totN)
+"""
+Display image sequence
+"""
+#display_imageStack(I_totN, bitdepth=16)
 
 
 
@@ -160,31 +165,6 @@ display_imageStack(I_totN)
 # plt.plot(I_tot[:,25,25]);plt.plot(I_tot[:,6,1])
     
 # plt.imshow(I_tot[11])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
