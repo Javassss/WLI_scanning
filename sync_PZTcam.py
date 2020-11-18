@@ -77,9 +77,9 @@ while(mode != 'c' and mode != 'm'):
 #Ib = gaussian_filter(Ib, sigma=5)
 
 if mode == 'c':
-    subfolder = '\\images_calibration'
+    subfolder = '\\_images_calibration'
 elif mode == 'm':
-    subfolder = '\\images_measurement'
+    subfolder = '\\_images_measurement'
 
 folder = os.path.dirname(os.path.realpath(__file__)) + subfolder + '\\stack'
 folder_srb = folder + '\\IsIrIb'
@@ -123,9 +123,12 @@ image_stack = np.zeros([height, rows, cols])
 #t3 = np.zeros(steps-extra)
 #t4 = np.zeros(steps-extra)
 #t5 = np.zeros(steps-extra)
-ts = time()
+
+times = np.zeros(steps-extra)
+
 mlb.begin_acquisition(cam)
 
+ts = time()
 for i in range(steps-extra):
 #    ts1 = time()
     rvalue = ser.readline().split(b'\r')[0]
@@ -137,6 +140,7 @@ for i in range(steps-extra):
     
     if i+1 > omit:
         image_stack[i-omit-1] = mlb.grab_next_image_by_trigger(cam)
+        times[i] = time()
 #    image_stack[i] = mlb.trigger_image_acquisition(cam_nodes)
          
 #    t3[i] = time() - ts3
@@ -158,6 +162,7 @@ ser.close()
 for j in range(height):
     fn = '\\' +  str(j) + '.tiff'
     imageio.imsave(folder + fn, image_stack[j])
+
 
 
 
