@@ -34,7 +34,7 @@ import mylibrary as mlb
 import rw_config as cfg
 import sync_PZTcam_methods as piezoscan
 import calibratePZT_methods as calibrate
-import get_profile_methods as analysis
+import get_profile as analysis
 
 
 """
@@ -96,8 +96,8 @@ def create_cameraprocess(q, release_event, beginlive_event, stoplive_event,\
                     else:
                         imax.set_data(img)
                         livefeed_canvas.draw()
-                    if toggle_selector.RS.active:
-                        toggle_selector.RS.update()
+                    if toggle_selector_RS.active:
+                        toggle_selector_RS.update()
 #                    livefeed_canvas.create_image(0,0,image=photo,anchor='nw')
                     
                     root.update()
@@ -286,6 +286,9 @@ def save_POI(event):
         POI.append((x, y))  # it must be a sequence ( , )
         print(POI)
 
+"""
+Callback when 'enter' key is pressed after ROI selection
+"""
 def toggle_selector(event):
 #    print(event.key)
     if event.key=='enter' and toggle_selector_RS.active:
@@ -296,6 +299,64 @@ def toggle_selector(event):
         toggle_selector_RS.set_active(False)
         livefeed_canvas.mpl_disconnect(ts_id)
         root.focus_set()
+        
+        #----------------------------------------------------------------------
+        # Also save the new ROI in the configuration text box (2nd tab)
+        #----------------------------------------------------------------------
+        (x1,y1), (x2,y2) = ROI
+        
+        # Modify ROI according to the camera constraints
+        height = y2 - y1
+        rem = (height - min_height)%incr_y
+        if rem > 0 and rem <= incr_y//2:
+            height -= rem
+        elif rem > incr_y//2:
+            height += incr_y - rem
+        #------------------------------------
+        width = x2 - x1
+        rem = (width-min_width)%incr_x
+        if rem > 0 and rem <= incr_x//2:
+            width -= rem
+        elif rem > incr_x//2:
+            width += incr_x - rem   
+        #------------------------------------
+        offset_y = y1
+        rem = offset_y%incr_y
+        if rem > 0 and rem <= incr_y//2:
+            offset_y -= rem
+        elif rem > incr_y//2:
+            offset_y += incr_y - rem
+        #------------------------------------
+        offset_x = x1
+        rem = offset_x%incr_x
+        if rem > 0 and rem <= incr_x//2:
+            offset_x -= rem
+        elif rem > incr_x//2:
+            offset_x += incr_x - rem
+        
+        # Take string from text box
+        tbox_contents = text_config.get('1.0','end')
+        # Convert it to SectionProxy object
+        section_list = cfg.load_config_fromtkText('ALL', tbox_contents)
+        # Change dimensions and offsets
+        for i in range(1,3):
+            section_list[i]['height'] = str(height)
+            section_list[i]['width'] = str(width)
+            section_list[i]['offset y'] = str(offset_y)
+            section_list[i]['offset x'] =str(offset_x)
+        # Convert back to string
+        config_text = cfg.save_config_totkText(section_list)
+        # Insert the configuration list into the configuration text box
+        text_config.delete('1.0','end')
+        text_config.insert('end',config_text)
+        
+        # Write configuration list from text box to 'config.ini'
+        with open('config.ini','w') as configfile:
+            configfile.write(config_text)
+            configfile.close()
+        
+        # signal the camera worker to update its global variable 'sections'
+        update_config()
 
 def line_select_callback(eclick, erelease):
     global ROI
@@ -411,6 +472,31 @@ def update_config():
     tbox.value = bytes(text_config.get('1.0','end-1c'), 'utf8')
     updateconfig_event.set()
 
+def resetToMaximage():
+    # Take string from text box
+    tbox_contents = text_config.get('1.0','end')
+    # Convert it to SectionProxy object
+    section_list = cfg.load_config_fromtkText('ALL', tbox_contents)
+    # Reset dimensions and offsets to default
+    default_height = section_list[0]['height']
+    default_width = section_list[0]['width']
+    default_offsety = section_list[0]['offset y']
+    default_offsetx = section_list[0]['offset x']
+    
+    for i in range(1,3):
+        section_list[i]['height'] = str(default_height)
+        section_list[i]['width'] = str(default_width)
+        section_list[i]['offset y'] = str(default_offsety)
+        section_list[i]['offset x'] =str(default_offsetx)
+    # Convert back to string
+    config_text = cfg.save_config_totkText(section_list)
+    # Insert the configuration list into the configuration text box
+    text_config.delete('1.0','end')
+    text_config.insert('end',config_text)
+    
+    # signal the camera worker to update its global variable 'sections'
+    update_config()
+
 def load_config(tbox):
     global sections
     
@@ -481,8 +567,7 @@ def prepare_calibrate():
     calibrate.run(steps)
 
 def prepare_analysis():
-    steps = eval(piezosteps_var.get())
-    analysis.run(calib_linear_region, steps)
+    analysis.run()
 
 def clear_outputtext():
     output_text.delete('1.0','end')
@@ -555,12 +640,18 @@ def gui():
     
     global updateconfig_event
     
-    global POI, ROI
+    global POI, ROI, min_height, min_width, incr_x, incr_y
     global displaymidline_state
     global piezo_dispaxis, calib_linear_region
     global toggle_selector_RS
     
     POI, ROI = [], []
+    # camera restrictions for ROI
+    min_height = 6
+    min_width = 8
+    incr_x = 4
+    incr_y = 2
+    #-------------------------------
     displaymidline_state = False
     measurementfolder_name = 'stack'
     calibrationfolder_name = 'stack'
@@ -651,6 +742,17 @@ def gui():
                        command=update_config)
     
     button_saveconfig.grid(row=0,column=2,padx=10,pady=10)
+    
+    """
+    RESET DEFAULT CONFIGURATION
+    """
+    button_saveconfig = tk.Button(tab_config, 
+                       text="Max Image",
+                       bg="white",
+                       fg="black",
+                       command=resetToMaximage)
+    
+    button_saveconfig.grid(row=0,column=3,padx=10,pady=10)
     
     """
     CAMERA CONNECTION/DISCONNECTION FRAME
@@ -1046,38 +1148,3 @@ if __name__ == "__main__":
     gui()
     
     
-### DUMPSTER ###
-
-#    livefeed_canvas = tk.Canvas(imageplots_frame, height = h, width = w)
-#    livefeed_canvas.grid(row=0,column=0,padx=0,pady=0,sticky='nswe')
-#    
-#    img = Image.frombytes('L', (w, h), b'\xff'*(w*h))
-#    photo = ImageTk.PhotoImage(image=img)
-#    livefeed_canvas.create_image(0,0,image=photo,anchor='nw')
-
-
-
-
-#                    # live POI plotting
-#                    if piezostep_event.is_set():
-#                        if first_step == False:
-#                            ctr = 0
-#                            first_step = True
-#                        else:
-#                            ctr = 0 if ctr == max_ctr-1 else ctr
-#                            
-#                        if ctr == 0:
-#                            a.clear()
-#                            xp = []
-#                            yp = [ [] for i in range(len(POI)) ]
-#                        
-#                        xp.append(ctr)
-#                        
-#                        for i in range(len(POI)):
-#                            yp[i].append(img.getpixel(POI[i]))
-#                            a.plot(xp, yp[i], colors[i]+'o-')
-#                        
-#                        canvas_plot.draw()
-#                        root.update()
-#                        ctr += 1
-#                        piezostep_event.clear()
