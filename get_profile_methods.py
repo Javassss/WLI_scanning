@@ -86,6 +86,8 @@ def sort_filelist(filelist):
     return sorted_filelist
 
 def run(calib_linear_region, steps):
+
+def run2(calib_linear_region, steps):
     if 'FileList1' in globals():
         FileList1.clear();
         del FileList1
@@ -248,43 +250,3 @@ def run(calib_linear_region, steps):
 
 
 
-#"""
-#################### NO tilt correction
-#"""
-#
-#sp = np.shape(profile)
-#ROI = [0,sp[0]-1,0,sp[1]-1]
-##ROI = [5,49,9,49]
-#area = profile[ROI[0]:ROI[1]+1,ROI[2]:ROI[3]+1]
-#
-#x = np.arange(ROI[0],ROI[1]+1)
-#y = np.arange(ROI[2],ROI[3]+1)
-#x, y = np.meshgrid(y, x)
-#"""
-#mask NaN values
-#"""
-#prof = np.ma.masked_invalid(area)
-#"""
-#get only the valid values
-#"""
-#x1 = x[~prof.mask]
-#y1 = y[~prof.mask]
-#nprof = prof[~prof.mask]
-#
-#"""
-#interpolate NaN values
-#"""
-#prof = griddata((x1, y1), nprof.ravel(), (x, y), method='cubic')
-#
-#
-#fig = plt.figure()
-#ax = fig.gca(projection='3d')
-##ax.set_zlim(0, 3e6)
-#surf = ax.plot_surface(x, y, prof, cmap='gnuplot')
-#plt.show()
-#fig.colorbar(surf)
-#
-#
-#"""
-####################
-#"""
