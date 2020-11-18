@@ -244,20 +244,6 @@ def run(steps):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## display results
 #fig, axes = plt.subplots(1, 3, figsize=(8, 3), sharex=True, sharey=True)
 #ax = axes.ravel()
