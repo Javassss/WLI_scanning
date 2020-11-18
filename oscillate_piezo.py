@@ -80,4 +80,3 @@ def run(piezostep_event, steps, stdout_queue):
 #    shared_data.flag_POI = 0
     
     ser.close()
-    
