@@ -16,18 +16,20 @@ This package offers two ways of carrying out measurement and analysis of a speci
   1) Via an integrated GUI that sets up the camera configurations, calibrates the piezo actuator, displaying specimen images live, acquires image sets and produces the surface elevation profile of the specimen. It also contains some auxiliary functionalities for the setting of the interferometer arms.
   2) Each aforementioned step can be executed separately via the corresponding python scripts. (See file descriptions)
   
-  C/C++
-  
-  There are two different Arduino codes: one used for oscillating the piezo actuator back and forth for fringe viewing purposes only and one used for the measurement process.
+C/C++
 
-###############################################################
-----L O N G    E X P L A N A T I O N    A N D    S T E P S-----
-###############################################################
+There are two different Arduino codes: one used for oscillating the piezo actuator back and forth for fringe viewing purposes only and one used for the measurement process.
+
+# Installation
+
+---------------------------------------------------------------
+L O N G    E X P L A N A T I O N    A N D    S T E P S-----
+---------------------------------------------------------------
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+---------------------------------------------------------------
 Creating an environment from the "environment.yml" file
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+---------------------------------------------------------------
 Use the terminal or an Anaconda Prompt for the following steps:
 
 1.	Create the environment from the environment.yml file:
@@ -45,9 +47,9 @@ Use the terminal or an Anaconda Prompt for the following steps:
 
 	$ conda list
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-­­­Installing Spinnaker SDK with PySpin libraries
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+---------------------------------------------------------------
+Installing Spinnaker SDK with PySpin libraries
+---------------------------------------------------------------
 
 Except for the required packages mentioned in the environment.yml file, there are two last files that must be downloaded and installed.
 
@@ -79,9 +81,9 @@ Notes:
 
 
 
-###############################################################
---------------J U S T    T H E    C O M M A N D S--------------
-###############################################################
+-----------------------------------
+ U S T    T H E    C O M M A N D S
+-----------------------------------
 
 (In Anaconda Prompt)
 $ conda env create -f environment.yml
