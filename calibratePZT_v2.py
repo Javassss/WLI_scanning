@@ -24,6 +24,43 @@ from skimage.feature import peak_local_max
 from matplotlib.lines import Line2D
 import os
 
+#%%
+
+"""
+CALCULATE ERRORS (MAX-MIN, QUARTILES PER SCAN STEP) IN CALIBRATED DISPLACEMENTS THROUGH 'N' SESSIONS OF PIEZO SCANNING
+"""
+def calc_errors():
+    global  calibs, stderror_array
+    
+    Nfull = 580
+    rmv = 20
+    N = Nfull - rmv
+    n = np.arange(N)
+    Nm = 9
+    calibs = np.zeros([Nm,Nfull])
+    for key, value in enumerate([2,3,4,5,6,7,8,9,10]):
+        calibs[key] = np.loadtxt('Mapping_Steps_Displacement_%d.txt'%value)
+        
+    totd = np.zeros(N)
+    q1 = np.zeros(N)
+    q2 = np.zeros(N)
+    q3 = np.zeros(N)
+    qd = np.zeros(N)
+    stderror_array = np.zeros(N)
+    for i in range(rmv, Nfull):
+        totd[i-rmv] = np.amax(calibs[:,i]) - np.amin(calibs[:,i])
+        q1[i-rmv] = np.percentile(calibs[:,i], [25])
+        q2[i-rmv] = np.percentile(calibs[:,i], [50])
+        q3[i-rmv] = np.percentile(calibs[:,i], [75])
+        qd[i-rmv] = q3[i-rmv] - q1[i-rmv]
+        stderror_array[i-rmv] = np.std(calibs[:,i])/np.sqrt(Nm)
+    
+#    plt.plot(n,totd,n,qd,n,np.median(totd)*np.ones(len(n)),n,np.median(qd)*np.ones(len(n)))
+#    plt.legend(['Max-Min per scan number','Difference of quartiles 1,3 per scan number',\
+#                'Median of Max-Min','Median of quartile differences'])
+    
+#%%
+
 def read_IsIrIb():
     global Is
     global Ir
@@ -223,8 +260,8 @@ len_snlist = len(samenamelist1)
 np.savetxt('Mapping_Steps_Displacement_{}.txt'.format(str(len_snlist+1)), mapping)
 #--------
 # FOR MEASURING VIBRATIONS -- ONLY WHEN FLAT MIRRORS ON BOTH ARMS AND PZT NOT MOVING
-np.savetxt('Displacements.txt', displacements)
-np.savetxt('Incremental.txt', incremental)
+#np.savetxt('Displacements.txt', displacements)
+#np.savetxt('Incremental.txt', incremental)
 #--------
 
 """
