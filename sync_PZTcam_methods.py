@@ -135,13 +135,3 @@ def run(steps, mode, stackfolder_name):
     for j in range(height):
         fn = '\\' +  str(j) + '.tiff'
         imageio.imsave(folder + fn, image_stack[j])
-
-
-
-
-
-
-
-
-
-
