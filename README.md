@@ -23,7 +23,7 @@ There are two different Arduino codes: one used for oscillating the piezo actuat
 # Installation
 
 ---------------------------------------------------------------
-L O N G    E X P L A N A T I O N    A N D    S T E P S-----
+L O N G    E X P L A N A T I O N    A N D    S T E P S
 ---------------------------------------------------------------
 
 
@@ -82,14 +82,14 @@ Notes:
 
 
 -----------------------------------
- U S T    T H E    C O M M A N D S
+J U S T    T H E    C O M M A N D S
 -----------------------------------
 
-(In Anaconda Prompt)
-$ conda env create -f environment.yml
-$ conda activate <myenv>
-Run SpinnakerSDK_FULL_x.x.x.x application and install all the contained drivers and Visual Studio redistributables.
-Open spinnaker_python-1.13.0.33-amd64\spinnaker_python-1.13.0.33-cp36-cp36m-win_amd64.zip
-Extract spinnaker_python-1.13.0.33-cp36-cp36m-win_amd64.whl in a folder.
-$ cd <full path to the folder containing the wheel file>
-$ pip install spinnaker_python-1.13.0.33-cp36-cp36m-win_amd64.whl
+(In Anaconda Prompt)\
+$ conda env create -f environment.yml\
+$ conda activate <myenv>\
+Run SpinnakerSDK_FULL_x.x.x.x application and install all the contained drivers and Visual Studio redistributables.\
+Open spinnaker_python-1.13.0.33-amd64\spinnaker_python-1.13.0.33-cp36-cp36m-win_amd64.zip\
+Extract spinnaker_python-1.13.0.33-cp36-cp36m-win_amd64.whl in a folder.\
+$ cd <full path to the folder containing the wheel file>\
+$ pip install spinnaker_python-1.13.0.33-cp36-cp36m-win_amd64.whl\
