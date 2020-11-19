@@ -113,3 +113,10 @@ For Spyder use:
 - Extract spinnaker_python-1.13.0.33-cp36-cp36m-win_amd64.whl in a folder.\
 $ cd C:\<path to the folder containing the wheel file>\
 $ pip install spinnaker_python-1.13.0.33-cp36-cp36m-win_amd64.whl\
+
+--------------
+NOTES
+--------------
+
+Output plots are interactive (zooming, panning) and need to be in a separate window. If you use Spyder, you must:
+- Go to Tools -> Preferences -> Python console -> Graphics -> Backend:Inline, change "Inline" to "Automatic", click "OK"
