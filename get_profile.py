@@ -26,7 +26,6 @@ from scipy.optimize import least_squares
 from scipy.signal import fftconvolve, medfilt2d, correlate
 from skimage.feature import peak_local_max
 from mpl_toolkits.mplot3d import Axes3D
-from numba import jit
 from time import time
 from multiprocessing import Process, Pool, RawArray, cpu_count, log_to_stderr
 import ctypes
@@ -173,8 +172,7 @@ def run(*args, pp=True):
     |   |   |
     V   V   V
     """""""""
-#    mapping = np.loadtxt(file_list[0]+'\\..\\..\\..\\' + 'Mapping_Steps_Displacement_AVERAGE.txt')
-    mapping = np.loadtxt(file_list[0]+'\\..\\..\\..\\' + 'Mapping_Steps_Displacement_afterMirrorMeasurement.txt')
+    mapping = np.loadtxt(file_list[0]+'\\..\\..\\..\\' + 'Mapping_Steps_Displacement.txt')
     nmap = np.arange(len(mapping))
     
     # start and end points of piezo actuator 'almost linear' movement
@@ -183,7 +181,8 @@ def run(*args, pp=True):
     |   |   |
     V   V   V
     """""""""
-    nearly_linear_region = [19,580]
+    # nearly_linear_region = [19,580]
+    nearly_linear_region = [6,83] # if using EXAMPLE 'Mapping_Steps_Displacement' 
     
     s = nearly_linear_region[0]
     e = nearly_linear_region[1]
@@ -225,7 +224,7 @@ def run(*args, pp=True):
     
     #TODO
     t = time()
-#    profile = analysis_masked(image_stack, rows, cols, curve, n, profile, pname, mask_center)
+    # profile = analysis_masked(image_stack, rows, cols, curve, n, profile, pname, mask_center)
     profile = analysis(image_stack, rows, cols, curve, n, profile)
     elapsed_time = time() - t
     print(elapsed_time)
