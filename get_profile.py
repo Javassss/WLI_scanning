@@ -225,8 +225,8 @@ def run(*args, pp=True):
     
     #TODO
     t = time()
-    profile = analysis_masked(image_stack, rows, cols, curve, n, profile, pname, mask_center)
-#    profile = analysis(image_stack, rows, cols, curve, n, profile)
+#    profile = analysis_masked(image_stack, rows, cols, curve, n, profile, pname, mask_center)
+    profile = analysis(image_stack, rows, cols, curve, n, profile)
     elapsed_time = time() - t
     print(elapsed_time)
     
