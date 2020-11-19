@@ -26,26 +26,37 @@ There are two different Arduino codes: one used for oscillating the piezo actuat
 L O N G    E X P L A N A T I O N    A N D    S T E P S
 ---------------------------------------------------------------
 
+- Download .zip and save it to your desired directory.
+- Unzip
 
 ---------------------------------------------------------------
 Creating an environment from the "environment.yml" file
 ---------------------------------------------------------------
-Use the terminal or an Anaconda Prompt for the following steps:
+1.	Windows Start -> Anaconda prompt
 
-1.	Create the environment from the environment.yml file:
-	The first line of the yml file sets the new environment's name.
+2.	Go to the directory where you have stored the unzipped project folder.
+	$ cd C:\<path>\WLI_scanning-final
+
+3.	Create the environment from the environment.yml file:
+	You can change the new enviroment name by editing the first line of the .yml file.
+	Default name is "wlsi".
 
 	$ conda env create -f environment.yml
 
-2. 	Activate the new environment:
+4. 	Activate the new environment:
 		
-	$ conda activate myenv
+	$ conda activate wlsi
 
-	[Note: Replace myenv with the environment name]
-
-3.	Verify that the new environment was installed correctly:
+5.	Verify that the new environment was installed correctly:
 
 	$ conda list
+
+6.	IF you wish to run code through Spyder, install Spyder also in the new environment:
+	
+	Windows Start -> Anaconda navigator -> "Home" tab -> "Applications on" combobox -> Select "wlsi"\
+	Spyder -> Install -> Launch
+	
+	
 
 ---------------------------------------------------------------
 Installing Spinnaker SDK with PySpin libraries
@@ -85,11 +96,20 @@ Notes:
 J U S T    T H E    C O M M A N D S
 -----------------------------------
 
-(In Anaconda Prompt)\
+- Download .zip and save it to your desired directory.
+- Unzip
+- Windows Start -> Anaconda prompt
+
+$ cd C:\<path>\WLI_scanning-final\
 $ conda env create -f environment.yml\
-$ conda activate <myenv>\
-Run SpinnakerSDK_FULL_x.x.x.x application and install all the contained drivers and Visual Studio redistributables.\
-Open spinnaker_python-1.13.0.33-amd64\spinnaker_python-1.13.0.33-cp36-cp36m-win_amd64.zip\
-Extract spinnaker_python-1.13.0.33-cp36-cp36m-win_amd64.whl in a folder.\
-$ cd <full path to the folder containing the wheel file>\
+$ conda activate wlsi
+
+For Spyder use:
+- Windows Start -> Anaconda navigator -> "Home" tab -> "Applications on" combobox -> Select "wlsi"
+- Spyder -> Install -> Launch
+
+- Run SpinnakerSDK_FULL_x.x.x.x application and install all the contained drivers and Visual Studio redistributables.\
+- Open spinnaker_python-1.13.0.33-amd64\spinnaker_python-1.13.0.33-cp36-cp36m-win_amd64.zip\
+- Extract spinnaker_python-1.13.0.33-cp36-cp36m-win_amd64.whl in a folder.\
+$ cd C:\<path to the folder containing the wheel file>\
 $ pip install spinnaker_python-1.13.0.33-cp36-cp36m-win_amd64.whl\
